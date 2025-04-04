@@ -6,17 +6,16 @@ class Database {
 
     public $connection;
 
-    public function __construct() {
+    public function __construct($config, $username = 'root', $password = '') {
+        
+        $dsn = 'mysql:' . http_build_query($config, '', ';');
 
-        //initialize PDO by creating a new instance of it
-        $dsn = "mysql:host=localhost;port=3306;dbname=first-php-project;charset=utf8mb4";
-
-        $this->connection = new PDO($dsn, 'root');
+        $this->connection = new PDO($dsn, $username, $password, [
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+        ]);
     }
 
     public function query($query) {
-
-
 
         $statement = $this->connection->prepare($query);
         $statement->execute();
